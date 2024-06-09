@@ -45,11 +45,16 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'helios',
+        'USER': get_from_env('DB_USER', ''),
+        'PASSWORD': get_from_env('DB_PASSWORD', ''),
+        'HOST': get_from_env('DB_HOST', ''),
+        'PORT': get_from_env('DB_PORT', ''),
         'CONN_MAX_AGE': 600,
     },
 }
 
 # override if we have an env variable
+print(DATABASES)
 if get_from_env('DATABASE_URL', None):
     import dj_database_url
     DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)

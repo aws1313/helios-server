@@ -1,0 +1,31 @@
+version: "3.5"
+services:
+  helios_server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+      - "8080:8080"
+      - "443:443"
+      - "8000:8000"
+    environment:
+      DB_USER: helios
+      DB_PASSWORD: 1234
+      DB_HOST: "db"
+      DB_PORT: 5432
+    depends_on:
+      - db
+
+  db:
+    image: postgres:13-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: helios
+      POSTGRES_DATABASE: helios
+      POSTGRES_PASSWORD: 1234
+    volumes:
+      - helios_db:/var/lib/postgresql/data
+
+volumes:
+  helios_db:
